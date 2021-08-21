@@ -1,14 +1,15 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   
   const name = 'hello world'
-  
+
+  const handleClick = () => {
   console.log(name)
+  }
   return (
     <div className="App">
-        <button>a</button>
+        <button onClick={handleClick}>あ</button>
     </div>
   );
 }
