@@ -7,8 +7,19 @@ function App() {
   const name = 'hello world'
 
   const handleClick = () => {
-    setCount(count + 1)
     console.log(name)
+  }
+
+  const aClick = () => {
+    setCount(count + 1)
+  }
+
+  const iClick = () => {
+    setCount(count - 1)
+  }
+
+  const uClick = () => {
+    setCount(0)
   }
 
   return (
@@ -19,7 +30,10 @@ function App() {
         <button onClick={() => { alert('🍣') }}>い</button>
   <h1>テキスト3</h1>
   <p>{count}</p>
-  <button onClick={handleClick}>eene</button>
+  <button onClick={aClick}>eene</button>
+  <button onClick={iClick}>不良</button>
+  <button onClick={uClick}>react</button>
+  <h1>テキスト4</h1>
 </div>
 )
 }
