@@ -1,6 +1,10 @@
 import './App.css';
-import React from 'react';
+import React,{useEffect} from 'react';
 import { useState }from 'react';
+import axios from 'axios';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ComponentsA from './ComponentsA';
+import ComponentsB from './ComponentsB';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -10,12 +14,34 @@ function App() {
   const [error, setError] = useState('')
   const [myhand,setMyhand] = useState('')
   const [cpuhand,setCpuhand] = useState('')
+  const [shoyu,setShoyu] = useState('')
+  const [quiitaAPIData,setQuiitaAPIData] = useState([])
   const guu = 'kobusi👊'
   const tyoo = 'hasami✂️'
   const paa = 'tenohira🙋‍'
-  const random = Math.floor( Math.random() * 3 );
- 
-    console.log( random );
+  const win = '勝ち'
+  const lose = '負け'
+  const draw = '引き分け'
+  const [gameNo,setGameNo] = useState(0)
+
+  console.log(gameNo, "gameNo")
+
+  useEffect(()=>{
+    getData()
+  },[])
+
+  useEffect(()=>{
+    if(myhand === "") return
+    suzuki()
+  },[gameNo])
+
+  const getData = async () => {
+    const res = await axios.get('https://qiita.com/api/v2/items')
+    setQuiitaAPIData(res.data)
+
+  console.log(quiitaAPIData, 'check ++++++++++')
+  console.log(res.data, 'check======')
+    }
 
   const handleClick = () => {
     console.log(hello)
@@ -46,37 +72,54 @@ function App() {
       setError("")
     }}
 
-    console.log(error) 
-
     const eClick = () => {
       console.log(guu)
       setMyhand(guu)
+      decidcpuhand(guu)
+      setGameNo(gameNo + 1)
     }
 
     const oClick = () => {
       console.log(tyoo)
       setMyhand(tyoo)
+      decidcpuhand(tyoo)
+      setGameNo(gameNo + 1)
     }
 
     const kaClick = () => {
       console.log(paa)
       setMyhand(paa)
-    }
-       
-    const kiClick = () => {
-      console.log(guu)
-      setCpuhand(guu)
+      decidcpuhand(paa)
+      setGameNo(gameNo + 1)
     }
 
-    const kuClick = () => {
-      console.log(tyoo)
-      setCpuhand(tyoo)
-    }
+    const decidcpuhand = () => {
+      const random = Math.floor( Math.random() * 3 );
+      if(random===0){
+        setCpuhand(guu)
+      }else if (random===1){
+        setCpuhand(tyoo)
+      }else if (random===2){
+        setCpuhand(paa)
+    }}
 
-    const keClick = () => {
-      console.log(paa)
-      setCpuhand(paa)
+    const suzuki = () => {
+    if(myhand === cpuhand) {
+      setShoyu(draw)
+      }else if(myhand === guu && cpuhand === tyoo){
+        setShoyu(win)
+      }else if(myhand === guu && cpuhand === paa){
+        setShoyu(lose)
+      }else if(myhand === tyoo && cpuhand === paa){
+        setShoyu(win)
+      }else if(myhand === tyoo && cpuhand === tyoo){
+        setShoyu(lose)
+      }else if(myhand === paa && cpuhand === guu){
+        setShoyu(win)
+      }else if(myhand === paa && cpuhand === tyoo){
+        setShoyu(lose)
     }
+  }
 
   return (
     <div className="App">
@@ -95,18 +138,28 @@ function App() {
   <button onClick={aaa} type="button" value="Submit">btton</button>
   <div style={{color : "red"}}>{error}</div>
   {message}
-  <h1>テキスト6</h1>
+  <h1>テキスト6・テキスト7</h1>
   <button onClick={eClick}>kobusi👊</button>
   <button onClick={oClick}>hasami✂️</button>
   <button onClick={kaClick}>tenohira🙋‍</button>
   <p>あなたの手:{myhand}</p>
   <p>npcの手:{cpuhand}</p>
-          {/* <ActionButton action = {guu} state = {this.state} setParentState={newState=>this.setState(newState)}></ActionButton> */}
-          {/* <ActionButton action = {paa} state = {this.state} setParentState={newState=>this.setState(newState)}></ActionButton> */}
-          {/* <ActionButton action = {tyoo} state = {this.state} setParentState={newState=>this.setState(newState)}></ActionButton> */}
-  {/* class ActionButton extends Component { */}
-  {/* _onPressButton(action) { */}
-    {/* }} */}
+  <p>ジャッジ:{shoyu}</p>
+  <h1>テキスト8・9</h1>
+    {quiitaAPIData && quiitaAPIData.map((q,index) => {
+      return (
+        <div key={index}>
+        <h4>{q.title}</h4>
+        <a>{q.url}</a>
+          </div>
+      )})}
+  <h1>テキスト10</h1>
+  <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<ComponentsA />} />　
+          <Route exact path="/ComponentsB" element={<ComponentsB />}  />
+        </Routes>
+      </BrowserRouter>
 </div>
 )
     
