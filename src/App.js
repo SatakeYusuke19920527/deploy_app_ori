@@ -5,6 +5,7 @@ import axios from 'axios';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ComponentsA from './ComponentsA';
 import ComponentsB from './ComponentsB';
+import  {Table}  from 'react-bootstrap';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -149,8 +150,19 @@ function App() {
     {quiitaAPIData && quiitaAPIData.map((q,index) => {
       return (
         <div key={index}>
-        <h4>{q.title}</h4>
-        <a>{q.url}</a>
+        <table>
+        <thead>
+          <tr>
+            <th>title</th><th>url</th>
+          </tr>
+          <tr>
+            <td>       <a href={q.url}><h4>{q.title}</h4></a></td>
+            <th>        <a href={q.url}><h4>{q.url}</h4></a></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
           </div>
       )})}
   <h1>テキスト10</h1>
